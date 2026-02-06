@@ -29,7 +29,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
             'name': 'Auriculares Bluetooth',
             'price': 199.90,
             'currency': 'BOB',
-            'stock': 25
+            'stock': 25,
+            'imageUrl': 'https://via.placeholder.com/200x200?text=Auriculares'
           },
           {
             'id': 2,
@@ -37,7 +38,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
             'name': 'Mouse Inalámbrico',
             'price': 89.90,
             'currency': 'BOB',
-            'stock': 50
+            'stock': 50,
+            'imageUrl': 'https://via.placeholder.com/200x200?text=Mouse'
           },
           {
             'id': 3,
@@ -45,7 +47,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
             'name': 'Teclado Mecánico',
             'price': 299.90,
             'currency': 'BOB',
-            'stock': 15
+            'stock': 15,
+            'imageUrl': 'https://via.placeholder.com/200x200?text=Teclado'
           },
         ],
         'pagination': {

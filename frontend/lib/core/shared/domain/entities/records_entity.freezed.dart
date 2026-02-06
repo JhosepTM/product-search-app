@@ -215,8 +215,8 @@ return $default(_that.data,_that.pagination);case _:
 /// @nodoc
 
 
-class _RecordsEntity<T> implements RecordsEntity<T> {
-  const _RecordsEntity({required final  List<T> data, required this.pagination}): _data = data;
+class _RecordsEntity<T> extends RecordsEntity<T> {
+  const _RecordsEntity({required final  List<T> data, required this.pagination}): _data = data,super._();
   
 
  final  List<T> _data;

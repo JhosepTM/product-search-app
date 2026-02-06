@@ -13,12 +13,13 @@ class ProductModel with _$ProductModel {
     required double price,
     required String currency,
     required int stock,
+    required String imageUrl,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
   factory ProductModel.fromEntity(ProductEntity entity) =>
-      ProductModel(id: entity.id, sku: entity.sku, name: entity.name, price: entity.price, currency: entity.currency, stock: entity.stock);
+      ProductModel(id: entity.id, sku: entity.sku, name: entity.name, price: entity.price, currency: entity.currency, stock: entity.stock, imageUrl: entity.imageUrl);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
