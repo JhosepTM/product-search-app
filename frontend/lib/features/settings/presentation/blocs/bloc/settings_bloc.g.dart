@@ -12,7 +12,7 @@ _SettingsState _$SettingsStateFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$SettingsStatusEnumMap, json['status']) ??
           SettingsStatus.NONE,
       visualSetting: json['visualSetting'] == null
-          ? null
+          ? const SettingEntity(darkModeActive: false)
           : SettingEntity.fromJson(
               json['visualSetting'] as Map<String, dynamic>,
             ),
@@ -21,7 +21,7 @@ _SettingsState _$SettingsStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SettingsStateToJson(_SettingsState instance) =>
     <String, dynamic>{
       'status': _$SettingsStatusEnumMap[instance.status]!,
-      'visualSetting': instance.visualSetting?.toJson(),
+      'visualSetting': instance.visualSetting.toJson(),
     };
 
 const _$SettingsStatusEnumMap = {
