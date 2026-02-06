@@ -6,4 +6,5 @@ public record ProductDto(
     string Name,
     decimal Price,
     string Currency,
-    int Stock);
+    int Stock,
+    string? ImageUrl);

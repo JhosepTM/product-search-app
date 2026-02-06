@@ -38,6 +38,9 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Stock)
                 .IsRequired();
 
+            entity.Property(e => e.ImageUrl)
+                .HasMaxLength(500);
+
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("NOW()");
 

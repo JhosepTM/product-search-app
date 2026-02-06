@@ -27,7 +27,7 @@ public class ProductService : IProductService
             pageSize: filter.PageSize);
 
         var dtos = items.Select(p => new ProductDto(
-            p.Id, p.Sku, p.Name, p.Price, p.Currency, p.Stock));
+            p.Id, p.Sku, p.Name, p.Price, p.Currency, p.Stock, p.ImageUrl));
 
         var totalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize);
 
@@ -39,7 +39,7 @@ public class ProductService : IProductService
         var product = await _repository.GetByIdAsync(id);
         if (product is null) return null;
 
-        return new ProductDto(product.Id, product.Sku, product.Name, product.Price, product.Currency, product.Stock);
+        return new ProductDto(product.Id, product.Sku, product.Name, product.Price, product.Currency, product.Stock, product.ImageUrl);
     }
 
     public async Task<ProductDto?> UpdatePriceAsync(int id, UpdatePriceDto dto)
