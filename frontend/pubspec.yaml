@@ -28,6 +28,7 @@ dependencies:
   path_provider: ^2.0.14
   flutter_dotenv: ^6.0.0
   toastification: ^3.0.3
+  talker_flutter: ^5.1.13
 
 dev_dependencies:
   flutter_test:

@@ -7,7 +7,9 @@ class ProductCard extends StatelessWidget {
 
   const ProductCard({super.key, required this.product});
 
-  bool get _isLowStock => product.stock < 10;
+  bool get _isLowStock => product.stock < 10 && product.stock > 0;
+  bool get _isOutOfStock => product.stock == 0;
+  bool get _hasStockWarning => _isLowStock || _isOutOfStock;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,10 @@ class ProductCard extends StatelessWidget {
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _isLowStock
+          color: _isOutOfStock
+              // ignore: deprecated_member_use
+              ? Colors.red.withOpacity(0.3)
+              : _isLowStock
               // ignore: deprecated_member_use
               ? Colors.orange.withOpacity(0.3)
               : theme.colorScheme.outlineVariant,
@@ -105,16 +110,53 @@ class ProductCard extends StatelessWidget {
                             fontSize: 18,
                           ),
                         ),
-                        // Stock
-                        Row(
+                        // Stock con warning encima
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            // Warning badge
+                            if (_hasStockWarning)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      _isOutOfStock
+                                          ? Icons.error_rounded
+                                          : Icons.warning_amber_rounded,
+                                      color: _isOutOfStock
+                                          ? Colors.red[700]
+                                          : Colors.orange[700],
+                                      size: 14,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      _isOutOfStock
+                                          ? 'Sin stock'
+                                          : 'Stock bajo',
+                                      style: TextStyle(
+                                        color: _isOutOfStock
+                                            ? Colors.red[700]
+                                            : Colors.orange[700],
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            // Stock badge
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: _isLowStock
+                                color: _isOutOfStock
+                                    // ignore: deprecated_member_use
+                                    ? Colors.red.withOpacity(0.15)
+                                    : _isLowStock
                                     // ignore: deprecated_member_use
                                     ? Colors.orange.withOpacity(0.15)
                                     // ignore: deprecated_member_use
@@ -126,7 +168,9 @@ class ProductCard extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.inventory_2,
-                                    color: _isLowStock
+                                    color: _isOutOfStock
+                                        ? Colors.red[700]
+                                        : _isLowStock
                                         ? Colors.orange[700]
                                         : Colors.green[700],
                                     size: 14,
@@ -135,7 +179,9 @@ class ProductCard extends StatelessWidget {
                                   Text(
                                     '${product.stock} Unidades',
                                     style: TextStyle(
-                                      color: _isLowStock
+                                      color: _isOutOfStock
+                                          ? Colors.red[700]
+                                          : _isLowStock
                                           ? Colors.orange[700]
                                           : Colors.green[700],
                                       fontWeight: FontWeight.w600,
@@ -153,14 +199,6 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              // Warning icon para bajo stock
-              if (_isLowStock)
-                Icon(
-                  Icons.warning_amber_rounded,
-                  color: Colors.orange[700],
-                  size: 24,
-                ),
-              const SizedBox(width: 4),
               // Chevron
               Icon(
                 Icons.chevron_right,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
@@ -32,6 +33,7 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final formData = _formKey.currentState!.value;
       final priceText = formData['price'] as String?;
+      final currencyText = formData['currency'] as String?;
       final price = double.tryParse(priceText ?? '');
 
       if (price == null || price <= 0) {
@@ -41,13 +43,19 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
         return;
       }
 
+      final currency = currencyText?.trim().toUpperCase() ?? '';
+      if (currency.isEmpty) {
+        _formKey.currentState?.fields['currency']?.invalidate('Requerido');
+        return;
+      }
+
       setState(() => _isSubmitting = true);
 
       context.read<ProductBloc>().add(
         ProductEvent.updateProductPrice(
           productId: widget.product.id,
           newPrice: price,
-          currency: widget.product.currency,
+          currency: currency,
         ),
       );
 
@@ -154,19 +162,44 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
                 ],
               ),
               const SizedBox(height: 32),
-              // Campo de precio con FormBuilder
-              AppFormTextField(
-                name: 'price',
-                label: 'Nuevo Precio',
-                initialValue: widget.product.price.toStringAsFixed(2),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                prefixText: '${widget.product.currency} ',
-                prefixStyle: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
-                ),
+              // Campos de precio y moneda
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Campo de moneda (3 caracteres máximo)
+                  SizedBox(
+                    width: 90,
+                    child: AppFormTextField(
+                      name: 'currency',
+                      label: 'Moneda',
+                      initialValue: widget.product.currency,
+                      textCapitalization: TextCapitalization.characters,
+                      maxLength: 3,
+                      inputFormatters: [
+                        UpperCaseTextFormatter(),
+                        LengthLimitingTextInputFormatter(3),
+                      ],
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Requerido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Campo de precio
+                  Expanded(
+                    child: AppFormTextField(
+                      name: 'price',
+                      label: 'Precio',
+                      initialValue: widget.product.price.toStringAsFixed(2),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 32),
               // Botón Actualizar Precio
@@ -228,6 +261,20 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Formatter para convertir texto a mayúsculas
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

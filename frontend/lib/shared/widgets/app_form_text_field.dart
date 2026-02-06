@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class AppFormTextField extends StatelessWidget {
@@ -14,6 +15,10 @@ class AppFormTextField extends StatelessWidget {
     this.prefixText,
     this.prefixStyle,
     this.enabled = true,
+    this.maxLength,
+    this.textCapitalization = TextCapitalization.none,
+    this.validator,
+    this.inputFormatters,
   });
 
   final String name;
@@ -26,6 +31,10 @@ class AppFormTextField extends StatelessWidget {
   final String? prefixText;
   final TextStyle? prefixStyle;
   final bool enabled;
+  final int? maxLength;
+  final TextCapitalization textCapitalization;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +46,10 @@ class AppFormTextField extends StatelessWidget {
       enabled: enabled,
       onChanged: onChanged,
       keyboardType: keyboardType,
+      maxLength: maxLength,
+      textCapitalization: textCapitalization,
+      validator: validator,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
@@ -45,6 +58,7 @@ class AppFormTextField extends StatelessWidget {
         prefixStyle: prefixStyle,
         filled: true,
         fillColor: theme.colorScheme.surface,
+        counterText: '',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: theme.dividerColor),
@@ -55,10 +69,7 @@ class AppFormTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-            width: 1.4,
-          ),
+          borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.4),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,

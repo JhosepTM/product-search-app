@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:frontend/core/errors/failures.dart';
 import 'package:frontend/core/network/http_client.dart';
 import 'package:frontend/core/shared/data/models/records_model.dart';
+import 'package:frontend/core/utils/talker_util.dart';
 import 'package:frontend/features/catalog/data/models/product_filter_model.dart';
 import 'package:frontend/features/catalog/data/models/product_model.dart';
 
@@ -37,6 +38,15 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         'PageSize': limit,
         ...?filter?.toQueryParameters(),
       };
+
+      talker.info(
+        '[ProductDataSource] Fetching products - page: $page, limit: $limit',
+      );
+      if (filter != null) {
+        talker.debug(
+          '[ProductDataSource] Filter: ${filter.toQueryParameters()}',
+        );
+      }
 
       final response = await _httpClient.requestHelper(
         endpoint: '/api/products',
@@ -76,7 +86,12 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       return Right(
         RecordsModel<ProductModel>(data: products, pagination: pagination),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      talker.error(
+        '[ProductDataSource] Error fetching products',
+        e,
+        stackTrace,
+      );
       return Left(ServerFailure(message: 'Failed to fetch products: $e'));
     }
   }
@@ -88,6 +103,10 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     required String currency,
   }) async {
     try {
+      talker.info(
+        '[ProductDataSource] Updating price - id: $id, price: $price, currency: $currency',
+      );
+
       final response = await _httpClient.requestHelper(
         endpoint: '/api/Products/$id/price',
         typeOfRequests: TypeRequests.patch,
@@ -97,13 +116,20 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       final body = response.data as Map<String, dynamic>;
 
       if (body['success'] != true) {
+        talker.warning(
+          '[ProductDataSource] API returned error updating price for product $id',
+        );
         return const Left(
           ServerFailure(message: 'Error al actualizar el precio del producto.'),
         );
       }
 
+      talker.info(
+        '[ProductDataSource] Price updated successfully for product $id',
+      );
       return const Right(true);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      talker.error('[ProductDataSource] Error updating price', e, stackTrace);
       return Left(ServerFailure(message: 'Failed to update product price: $e'));
     }
   }
