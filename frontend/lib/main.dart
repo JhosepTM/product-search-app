@@ -4,6 +4,7 @@ import 'package:frontend/application/injector.dart';
 import 'package:frontend/application/routes/app_router.dart';
 import 'package:frontend/application/theme/app_theme.dart';
 import 'package:frontend/core/core.dart';
+import 'package:frontend/features/catalog/presentation/blocs/product_bloc/product_bloc.dart';
 import 'package:frontend/features/settings/presentation/blocs/bloc/settings_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SettingsBloc>.value(value: Injector.get<SettingsBloc>()),
+        BlocProvider<ProductBloc>.value(value: Injector.get<ProductBloc>()),
       ],
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
