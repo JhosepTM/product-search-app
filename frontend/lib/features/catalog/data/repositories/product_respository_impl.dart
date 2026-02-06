@@ -1,0 +1,70 @@
+import 'package:dartz/dartz.dart';
+import 'package:frontend/core/errors/failures.dart';
+import 'package:frontend/core/shared/domain/entities/records_entity.dart';
+import 'package:frontend/features/catalog/data/datasources/product_remote_datasource.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/repositories/product_repository.dart';
+
+class ProductRepositoryImpl implements ProductRepository {
+  const ProductRepositoryImpl({required this.productRemoteDataSource});
+
+  final ProductRemoteDataSource productRemoteDataSource;
+
+  @override
+  Future<Either<Failure, RecordsEntity<ProductEntity>>> getPaginatedProducts({
+    required int page,
+    required int limit,
+  }) async {
+    final result = await productRemoteDataSource.fetchPaginatedProducts(
+      page: page,
+      limit: limit,
+    );
+
+    return result.fold(
+      (failure) => Left(failure),
+      (recordsModel) {
+        // Convertir ProductModel a ProductEntity
+        final products = recordsModel.data
+            .map((model) => ProductEntity.fromEntity(model))
+            .toList();
+
+        // Convertir PaginationInfoModel a PaginationInfoEntity
+        final pagination = PaginationInfoEntity(
+          limit: recordsModel.pagination.limit,
+          offset: recordsModel.pagination.offset,
+          total: recordsModel.pagination.total,
+          page: recordsModel.pagination.page,
+          totalPages: recordsModel.pagination.totalPages,
+          hasNextPage: recordsModel.pagination.hasNextPage,
+          hasPreviousPage: recordsModel.pagination.hasPreviousPage,
+        );
+
+        final records = RecordsEntity<ProductEntity>(
+          data: products,
+          pagination: pagination,
+        );
+
+        return Right(records);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateProductPrice({
+    required int productId,
+    required double newPrice,
+  }) async {
+    try {
+      // TODO: Implementar PATCH al backend para actualizar precio
+      // await _productRemoteDataSource.patchProductPrice(
+      //   productId: productId,
+      //   newPrice: newPrice,
+      // );
+      return const Right(true);
+    } catch (e) {
+      return Left(
+        ExampleFailure(message: 'Failed to update product price: \$e'),
+      );
+    }
+  }
+}
