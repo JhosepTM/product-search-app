@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/application/injector.dart';
 import 'package:frontend/application/routes/app_router.dart';
 import 'package:frontend/application/theme/app_theme.dart';
@@ -11,11 +12,13 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: '.env');
+
   final storage = await HydratedStorage.build(
     storageDirectory: HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   HydratedBloc.storage = storage;
-  
+
   await Injector.init();
 
   runApp(const MyApp());

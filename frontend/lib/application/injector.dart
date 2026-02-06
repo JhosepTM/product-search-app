@@ -1,4 +1,7 @@
+import 'package:frontend/core/constants/env_constants.dart';
 import 'package:frontend/core/core.dart';
+import 'package:frontend/core/network/dio_config.dart';
+import 'package:frontend/core/network/http_client.dart';
 import 'package:frontend/features/catalog/data/datasources/product_remote_datasource.dart';
 import 'package:frontend/features/catalog/data/repositories/product_respository_impl.dart';
 import 'package:frontend/features/catalog/domain/repositories/product_repository.dart';
@@ -18,15 +21,27 @@ class Injector {
   static T get<T extends Object>() => _locator<T>();
 
   static Future<void> init() async {
+    _registerNetwork();
     _registerDataSources();
     _registerRepositories();
     _registerUseCases();
     _registerBlocs();
   }
 
+  static void _registerNetwork() {
+    _locator.registerLazySingleton<DioConfig>(
+      () => DioConfig(baseUrl: EnvConstants.apiBaseUrl),
+    );
+    _locator.registerLazySingleton<HttpClientHelper>(
+      () => HttpClientHelper(_locator<DioConfig>().dio),
+    );
+  }
+
   static void _registerDataSources() {
     _locator.registerLazySingleton<ProductRemoteDataSource>(
-      () => ProductRemoteDataSourceImpl(),
+      () => ProductRemoteDataSourceImpl(
+        httpClient: _locator<HttpClientHelper>(),
+      ),
     );
   }
 

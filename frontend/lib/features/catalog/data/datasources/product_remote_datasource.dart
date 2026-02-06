@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:frontend/core/errors/failures.dart';
+import 'package:frontend/core/network/http_client.dart';
 import 'package:frontend/core/shared/data/models/records_model.dart';
 import 'package:frontend/features/catalog/data/models/product_model.dart';
 
@@ -11,75 +12,62 @@ abstract interface class ProductRemoteDataSource {
 }
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
+  final HttpClientHelper _httpClient;
+
+  ProductRemoteDataSourceImpl({required HttpClientHelper httpClient})
+      : _httpClient = httpClient;
+
   @override
   Future<Either<Failure, RecordsModel<ProductModel>>> fetchPaginatedProducts({
     required int page,
     required int limit,
   }) async {
     try {
-      // Simulando respuesta del backend
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Response simulado del backend
-      final mockResponse = {
-        'products': [
-          {
-            'id': 1,
-            'sku': 'SKU-1001',
-            'name': 'Auriculares Bluetooth',
-            'price': 199.90,
-            'currency': 'BOB',
-            'stock': 25,
-            'imageUrl': 'https://via.placeholder.com/200x200?text=Auriculares'
-          },
-          {
-            'id': 2,
-            'sku': 'SKU-1002',
-            'name': 'Mouse Inalámbrico',
-            'price': 89.90,
-            'currency': 'BOB',
-            'stock': 50,
-            'imageUrl': 'https://via.placeholder.com/200x200?text=Mouse'
-          },
-          {
-            'id': 3,
-            'sku': 'SKU-1003',
-            'name': 'Teclado Mecánico',
-            'price': 299.90,
-            'currency': 'BOB',
-            'stock': 15,
-            'imageUrl': 'https://via.placeholder.com/200x200?text=Teclado'
-          },
-        ],
-        'pagination': {
-          'limit': limit,
-          'offset': (page - 1) * limit,
-          'total': 42,
+      final response = await _httpClient.requestHelper(
+        endpoint: '/api/products',
+        typeOfRequests: TypeRequests.get,
+        queryParameters: {
           'page': page,
-          'totalPages': 5,
-          'hasNextPage': page < 5,
-          'hasPreviousPage': page > 1,
-        }
-      };
+          'pageSize': limit,
+        },
+      );
 
-      // Convertir respuesta a RecordsModel
-      final products = (mockResponse['products'] as List)
+      final body = response.data as Map<String, dynamic>;
+
+      if (body['success'] != true) {
+        return const Left(
+          ServerFailure(message: 'API returned an error response.'),
+        );
+      }
+
+      final data = body['data'] as Map<String, dynamic>;
+      final itemsList = data['items'] as List;
+      final totalCount = data['totalCount'] as int;
+      final currentPage = data['page'] as int;
+      final pageSize = data['pageSize'] as int;
+      final totalPages = data['totalPages'] as int;
+
+      final products = itemsList
           .map((p) => ProductModel.fromJson(p as Map<String, dynamic>))
           .toList();
 
-      final paginationInfo = PaginationInfoModel.fromJson(
-        mockResponse['pagination'] as Map<String, dynamic>,
+      final pagination = PaginationInfoModel(
+        limit: pageSize,
+        offset: (currentPage - 1) * pageSize,
+        total: totalCount,
+        page: currentPage,
+        totalPages: totalPages,
+        hasNextPage: currentPage < totalPages,
+        hasPreviousPage: currentPage > 1,
       );
 
-      final records = RecordsModel<ProductModel>(
+      return Right(RecordsModel<ProductModel>(
         data: products,
-        pagination: paginationInfo,
-      );
-
-      return Right(records);
+        pagination: pagination,
+      ));
     } catch (e) {
-      return Left<Failure, RecordsModel<ProductModel>>(
-        ExampleFailure(message: 'Failed to fetch paginated products: \$e'),
+      return Left(
+        ServerFailure(message: 'Failed to fetch products: $e'),
       );
     }
   }

@@ -1,5 +1,6 @@
 // dio_config.dart
 import 'package:dio/dio.dart';
+import 'package:frontend/core/constants/env_constants.dart';
 import 'package:frontend/core/network/network_guard_interceptor.dart';
 
 class DioConfig {
@@ -13,6 +14,11 @@ class DioConfig {
         connectTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'Content-Type': 'application/json',
+          if (EnvConstants.apiKey.isNotEmpty)
+            'X-Api-Key': EnvConstants.apiKey,
+        },
       ),
     );
 
