@@ -194,7 +194,7 @@ flutter test
 
 ---
 
-## 📱 Capturas
+## Resumen
 
 La aplicación incluye:
 - Listado con skeleton loading
@@ -202,3 +202,5 @@ La aplicación incluye:
 - Bottom sheet para editar precio
 - Indicadores de stock (normal, bajo, sin stock)
 - Tema claro y oscuro
+
+Nota: Cada repositorio de backend y frontend cuenta con un README que tiene mas detalles 
