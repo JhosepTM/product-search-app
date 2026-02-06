@@ -30,7 +30,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
   ) async {
     // Si es la primera página, mostrar loading. Si es página siguiente, mantener loading discreto
     if (event.page == 1) {
-      emit(state.copyWith(status: ProductStatus.loading));
+      emit(state.copyWith(status: ProductStatus.gettingProducts));
     }
 
     final result = await _productUseCases.getPaginatedProducts(
@@ -40,8 +40,12 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     );
 
     result.fold(
-      (failure) =>
-          emit(state.copyWith(status: ProductStatus.failure, failure: failure)),
+      (failure) => emit(
+        state.copyWith(
+          status: ProductStatus.errorGettingProducts,
+          failure: failure,
+        ),
+      ),
       (newRecords) {
         // Si es la primera página, reemplazar. Si no, concatenar
         final updatedProducts = event.page == 1
@@ -55,7 +59,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
 
         emit(
           state.copyWith(
-            status: ProductStatus.success,
+            status: ProductStatus.gotProducts,
             records: updatedRecords,
           ),
         );
@@ -67,6 +71,8 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     _UpdateProductPrice event,
     Emitter<ProductState> emit,
   ) async {
+    emit(state.copyWith(status: ProductStatus.updatingPrice));
+
     final result = await _productUseCases.updateProductPrice(
       productId: event.productId,
       newPrice: event.newPrice,
@@ -74,8 +80,12 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     );
 
     result.fold(
-      (failure) =>
-          emit(state.copyWith(status: ProductStatus.failure, failure: failure)),
+      (failure) => emit(
+        state.copyWith(
+          status: ProductStatus.errorUpdatingPrice,
+          failure: failure,
+        ),
+      ),
       (_) {
         // Actualizar el producto en la lista local
         final updatedProducts = state.records.data.map((product) {
@@ -95,7 +105,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
 
         emit(
           state.copyWith(
-            status: ProductStatus.success,
+            status: ProductStatus.updatedPrice,
             records: updatedRecords,
           ),
         );

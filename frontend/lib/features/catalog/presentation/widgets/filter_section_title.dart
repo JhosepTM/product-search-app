@@ -7,13 +7,15 @@ class FilterSectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Text(
       title,
       style: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w700,
         letterSpacing: 1.2,
-        color: Colors.grey.shade600,
+        color: theme.colorScheme.onSurfaceVariant,
       ),
     );
   }

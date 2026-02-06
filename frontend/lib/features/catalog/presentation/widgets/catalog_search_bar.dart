@@ -5,13 +5,11 @@ class CatalogSearchBar extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onSearchChanged,
-    required this.onOpenSettings,
     required this.onOpenFilters,
   });
 
   final TextEditingController controller;
   final ValueChanged<String> onSearchChanged;
-  final VoidCallback onOpenSettings;
   final VoidCallback onOpenFilters;
 
   @override
@@ -43,11 +41,6 @@ class CatalogSearchBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          IconButton(
-            tooltip: 'Configuraciones',
-            onPressed: onOpenSettings,
-            icon: const Icon(Icons.settings_outlined),
-          ),
           IconButton(
             tooltip: 'Filtros',
             onPressed: onOpenFilters,

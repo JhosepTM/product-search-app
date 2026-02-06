@@ -512,7 +512,7 @@ return $default(_that.status,_that.records,_that.failure);case _:
 @JsonSerializable()
 
 class _ProductState implements ProductState {
-  const _ProductState({this.status = ProductStatus.initial, @JsonKey(fromJson: _recordsFromJson, toJson: _recordsToJson) this.records = const RecordsEntity<ProductEntity>(data: [], pagination: PaginationInfoEntity()), @JsonKey(includeFromJson: false, includeToJson: false) this.failure = null});
+  const _ProductState({this.status = ProductStatus.none, @JsonKey(fromJson: _recordsFromJson, toJson: _recordsToJson) this.records = const RecordsEntity<ProductEntity>(data: [], pagination: PaginationInfoEntity()), @JsonKey(includeFromJson: false, includeToJson: false) this.failure = null});
   factory _ProductState.fromJson(Map<String, dynamic> json) => _$ProductStateFromJson(json);
 
 @override@JsonKey() final  ProductStatus status;

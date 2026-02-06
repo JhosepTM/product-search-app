@@ -94,7 +94,7 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
@@ -105,7 +105,7 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
           ),
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.06),
+            color: theme.shadowColor.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, -2),
           ),
@@ -140,7 +140,7 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                     height: 5,
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
+                      color: theme.dividerColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -155,7 +155,7 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         fontSize: 20,
-                        color: Colors.black87,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     TextButton(
@@ -253,8 +253,8 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                 SliderTheme(
                   data: SliderThemeData(
                     activeTrackColor: theme.colorScheme.primary,
-                    inactiveTrackColor: Colors.grey.shade200,
-                    thumbColor: Colors.white,
+                    inactiveTrackColor: theme.dividerColor,
+                    thumbColor: theme.colorScheme.surface,
                     // ignore: deprecated_member_use
                     overlayColor: theme.colorScheme.primary.withOpacity(0.1),
                     trackHeight: 4,
@@ -341,14 +341,14 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: 15,
-                              color: Colors.black87,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             'Mostrar solo productos disponibles',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: Colors.grey.shade600,
+                              color: theme.colorScheme.onSurfaceVariant,
                               fontSize: 13,
                             ),
                           ),
@@ -361,10 +361,10 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                         return Switch(
                           value: field.value ?? false,
                           onChanged: field.didChange,
-                          activeColor: Colors.white,
+                          activeColor: theme.colorScheme.surface,
                           activeTrackColor: theme.colorScheme.primary,
-                          inactiveThumbColor: Colors.white,
-                          inactiveTrackColor: Colors.grey.shade300,
+                          inactiveThumbColor: theme.colorScheme.surface,
+                          inactiveTrackColor: theme.dividerColor,
                         );
                       },
                     ),
@@ -420,7 +420,7 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: theme.colorScheme.onPrimary,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),

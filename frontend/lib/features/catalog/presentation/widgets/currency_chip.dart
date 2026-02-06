@@ -22,10 +22,10 @@ class CurrencyChip extends StatelessWidget {
       child: Container(
         height: 54,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: selected ? theme.colorScheme.primary : Colors.grey.shade300,
+            color: selected ? theme.colorScheme.primary : theme.dividerColor,
             width: selected ? 2 : 1,
           ),
         ),
@@ -35,7 +35,9 @@ class CurrencyChip extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: selected ? Colors.black87 : Colors.grey.shade700,
+                color: selected
+                    ? theme.colorScheme.onSurface
+                    : theme.colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w700,
                 fontSize: 15,
               ),
@@ -46,7 +48,7 @@ class CurrencyChip extends StatelessWidget {
               size: 20,
               color: selected
                   ? theme.colorScheme.primary
-                  : Colors.grey.shade400,
+                  : theme.colorScheme.onSurfaceVariant,
             ),
           ],
         ),

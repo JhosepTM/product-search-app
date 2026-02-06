@@ -24,10 +24,10 @@ class DirectionChip extends StatelessWidget {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected ? theme.colorScheme.primary : Colors.grey.shade300,
+            color: selected ? theme.colorScheme.primary : theme.dividerColor,
             width: selected ? 1.5 : 1,
           ),
         ),
@@ -39,7 +39,7 @@ class DirectionChip extends StatelessWidget {
               size: 18,
               color: selected
                   ? theme.colorScheme.primary
-                  : Colors.grey.shade600,
+                  : theme.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(width: 8),
             Text(
@@ -47,7 +47,7 @@ class DirectionChip extends StatelessWidget {
               style: TextStyle(
                 color: selected
                     ? theme.colorScheme.primary
-                    : Colors.grey.shade700,
+                    : theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
               ),
