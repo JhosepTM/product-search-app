@@ -1,6 +1,7 @@
 import 'package:frontend/core/core.dart';
 import 'package:frontend/core/shared/domain/entities/records_entity.dart';
-import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/profuct_filter_entity/product_filter_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
 import 'package:frontend/features/catalog/domain/usecases/product_use_cases.dart';
 
 part 'product_bloc.freezed.dart';
@@ -16,6 +17,11 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
   }
 
   final ProductUseCases _productUseCases;
+  ProductFilterEntity? _activeFilter;
+
+  void setFilter(ProductFilterEntity? filter) {
+    _activeFilter = filter;
+  }
 
   Future<void> _onFetchProducts(
     _FetchProducts event,
@@ -29,6 +35,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     final result = await _productUseCases.getPaginatedProducts(
       page: event.page,
       limit: event.limit,
+      filter: _activeFilter,
     );
 
     result.fold(

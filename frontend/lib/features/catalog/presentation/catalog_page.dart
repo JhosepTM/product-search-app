@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/application/injector.dart';
+import 'package:frontend/features/catalog/domain/entities/profuct_filter_entity/product_filter_entity.dart';
 import 'package:frontend/features/catalog/presentation/blocs/product_bloc/product_bloc.dart';
+import 'package:frontend/features/catalog/presentation/widgets/catalog_search_bar.dart';
 import 'package:frontend/features/catalog/presentation/widgets/product_card.dart';
+import 'package:frontend/features/catalog/presentation/widgets/product_filter_sheet.dart';
 import 'package:frontend/features/catalog/presentation/widgets/product_skeleton.dart';
+import 'package:go_router/go_router.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -16,6 +22,9 @@ class _CatalogPageState extends State<CatalogPage> {
   late ScrollController _scrollController;
   final TextEditingController _searchController = TextEditingController();
   String _selectedCategory = 'Todos';
+  Timer? _searchDebounce;
+  ProductFilterEntity? _activeFilter;
+  int _pageSize = 10;
 
   final List<String> _categories = [
     'Todos',
@@ -27,15 +36,17 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   void initState() {
     super.initState();
-    Injector.get<ProductBloc>().add(const ProductEvent.fetchProducts());
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    Injector.get<ProductBloc>()
+        .add(ProductEvent.fetchProducts(page: 1, limit: _pageSize));
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     _searchController.dispose();
+    _searchDebounce?.cancel();
     super.dispose();
   }
 
@@ -49,9 +60,43 @@ class _CatalogPageState extends State<CatalogPage> {
         state.status == ProductStatus.success) {
       final nextPage = state.records.pagination.page + 1;
       context.read<ProductBloc>().add(
-            ProductEvent.fetchProducts(page: nextPage),
+            ProductEvent.fetchProducts(page: nextPage, limit: _pageSize),
           );
     }
+  }
+
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 450), () {
+      final search = value.trim();
+      final baseFilter = _activeFilter ?? const ProductFilterEntity();
+      final updatedFilter = baseFilter.copyWith(
+        search: search.isEmpty ? null : search,
+      );
+      _activeFilter = updatedFilter;
+      context.read<ProductBloc>().setFilter(updatedFilter);
+      context.read<ProductBloc>().add(
+            ProductEvent.fetchProducts(page: 1, limit: _pageSize),
+          );
+    });
+  }
+
+  Future<void> _openFilters() async {
+    final result = await ProductFilterSheet.show(
+      context,
+      initialFilter: _activeFilter,
+    );
+
+    if (!mounted || result == null) return;
+    final search = _searchController.text.trim();
+    final updatedFilter = result.copyWith(
+      search: search.isEmpty ? null : search,
+    );
+    _activeFilter = updatedFilter;
+    context.read<ProductBloc>().setFilter(updatedFilter);
+    context.read<ProductBloc>().add(
+          ProductEvent.fetchProducts(page: 1, limit: _pageSize),
+        );
   }
 
   @override
@@ -67,28 +112,11 @@ class _CatalogPageState extends State<CatalogPage> {
       body: Column(
         children: [
           // Barra de búsqueda
-          Container(
-            color: theme.scaffoldBackgroundColor,
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Buscar por nombre o SKU',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-              onChanged: (value) {
-                // TODO: Implementar búsqueda
-              },
-            ),
+          CatalogSearchBar(
+            controller: _searchController,
+            onSearchChanged: _onSearchChanged,
+            onOpenSettings: () => context.go('/settings'),
+            onOpenFilters: _openFilters,
           ),
           // Filtros de categoría
           Container(
@@ -212,3 +240,4 @@ class _CatalogPageState extends State<CatalogPage> {
     );
   }
 }
+

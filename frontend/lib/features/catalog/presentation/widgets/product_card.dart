@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
 import 'package:frontend/features/catalog/presentation/widgets/edit_price_bottom_sheet.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-  });
+  const ProductCard({super.key, required this.product});
 
   bool get _isLowStock => product.stock < 10;
 
@@ -99,13 +96,13 @@ class ProductCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Precio
+                        // Precio con moneda
                         Text(
-                          '\$${product.price.toStringAsFixed(2)}',
+                          '${product.currency} ${product.price.toStringAsFixed(2)}',
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         ),
                         // Stock

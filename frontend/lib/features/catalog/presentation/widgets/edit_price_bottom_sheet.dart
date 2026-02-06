@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
 
 class EditPriceBottomSheet extends StatefulWidget {
   final ProductEntity product;
 
-  const EditPriceBottomSheet({
-    super.key,
-    required this.product,
-  });
+  const EditPriceBottomSheet({super.key, required this.product});
 
   @override
   State<EditPriceBottomSheet> createState() => _EditPriceBottomSheetState();
@@ -155,28 +152,27 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
             // Campo de precio
             TextField(
               controller: _priceController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               inputFormatters: [
                 // ignore: deprecated_member_use
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
               ],
               decoration: InputDecoration(
                 filled: true,
-                suffixIcon: Icon(
-                  Icons.attach_money,
-                  color: theme.colorScheme.primary,
+                prefixText: '${widget.product.currency} ',
+                prefixStyle: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.outline,
-                  ),
+                  borderSide: BorderSide(color: theme.colorScheme.outline),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.outline,
-                  ),
+                  borderSide: BorderSide(color: theme.colorScheme.outline),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -187,9 +183,7 @@ class _EditPriceBottomSheetState extends State<EditPriceBottomSheet> {
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.error,
-                  ),
+                  borderSide: BorderSide(color: theme.colorScheme.error),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
