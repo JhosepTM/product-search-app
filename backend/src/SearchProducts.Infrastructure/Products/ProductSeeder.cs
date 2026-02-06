@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SearchProducts.Domain.Entities;
+using SearchProducts.Domain.Products;
+using SearchProducts.Infrastructure.Persistence;
 
-namespace SearchProducts.Infrastructure.Persistence;
+namespace SearchProducts.Infrastructure.Products;
 
 public static class ProductSeeder
 {

@@ -1,6 +1,4 @@
-using SearchProducts.Domain.Entities;
-
-namespace SearchProducts.Domain.Interfaces;
+namespace SearchProducts.Domain.Products;
 
 public interface IProductRepository
 {

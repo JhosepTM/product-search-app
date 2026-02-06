@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using SearchProducts.Application.Services;
+using SearchProducts.Application.Products.Services;
 
 namespace SearchProducts.Application;
 

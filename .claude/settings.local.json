@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(del \"c:\\\\Users\\\\Usuario\\\\Desktop\\\\product-search-app\\\\backend\\\\src\\\\SearchProducts.Domain\\\\Entities\\\\Product.cs\")"
+    ]
+  }
+}

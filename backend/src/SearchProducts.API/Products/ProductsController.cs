@@ -1,10 +1,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SearchProducts.Application.Common;
-using SearchProducts.Application.DTOs;
-using SearchProducts.Application.Services;
+using SearchProducts.Application.Products.DTOs;
+using SearchProducts.Application.Products.Services;
 
-namespace SearchProducts.API.Controllers;
+namespace SearchProducts.API.Products;
 
 [ApiController]
 [Route("api/[controller]")]

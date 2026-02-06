@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using SearchProducts.Domain.Entities;
-using SearchProducts.Domain.Interfaces;
+using SearchProducts.Domain.Products;
 using SearchProducts.Infrastructure.Persistence;
 
-namespace SearchProducts.Infrastructure.Repositories;
+namespace SearchProducts.Infrastructure.Products;
 
 public class ProductRepository : IProductRepository
 {

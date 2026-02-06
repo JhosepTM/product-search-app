@@ -1,4 +1,4 @@
-namespace SearchProducts.Domain.Entities;
+namespace SearchProducts.Domain.Products;
 
 public class Product
 {

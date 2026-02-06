@@ -1,4 +1,4 @@
-namespace SearchProducts.Application.DTOs;
+namespace SearchProducts.Application.Products.DTOs;
 
 public record ProductFilterDto(
     string? Search = null,

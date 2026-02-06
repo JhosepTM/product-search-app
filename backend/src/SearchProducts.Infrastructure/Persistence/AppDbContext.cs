@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SearchProducts.Domain.Entities;
+using SearchProducts.Domain.Products;
 
 namespace SearchProducts.Infrastructure.Persistence;
 

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SearchProducts.Domain.Interfaces;
+using SearchProducts.Domain.Products;
 using SearchProducts.Infrastructure.Persistence;
-using SearchProducts.Infrastructure.Repositories;
+using SearchProducts.Infrastructure.Products;
 
 namespace SearchProducts.Infrastructure;
 

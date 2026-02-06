@@ -1,8 +1,8 @@
 using SearchProducts.Application.Common;
-using SearchProducts.Application.DTOs;
-using SearchProducts.Domain.Interfaces;
+using SearchProducts.Application.Products.DTOs;
+using SearchProducts.Domain.Products;
 
-namespace SearchProducts.Application.Services;
+namespace SearchProducts.Application.Products.Services;
 
 public class ProductService : IProductService
 {

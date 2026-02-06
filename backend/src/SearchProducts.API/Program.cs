@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using SearchProducts.API.Middleware;
 using SearchProducts.Application;
 using SearchProducts.Infrastructure;
-using SearchProducts.Infrastructure.Persistence;
+using SearchProducts.Infrastructure.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,14 +41,11 @@ await ProductSeeder.SeedAsync(app.Services);
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<ApiKeyMiddleware>();
 
-if (app.Environment.IsDevelopment())
+app.MapOpenApi();
+app.UseSwaggerUI(options =>
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "SearchProducts API v1");
-    });
-}
+    options.SwaggerEndpoint("/openapi/v1.json", "SearchProducts API v1");
+});
 
 app.UseCors();
 app.MapControllers();

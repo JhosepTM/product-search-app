@@ -1,7 +1,7 @@
 using FluentValidation;
-using SearchProducts.Application.DTOs;
+using SearchProducts.Application.Products.DTOs;
 
-namespace SearchProducts.Application.Validators;
+namespace SearchProducts.Application.Products.Validators;
 
 public class ProductFilterValidator : AbstractValidator<ProductFilterDto>
 {
