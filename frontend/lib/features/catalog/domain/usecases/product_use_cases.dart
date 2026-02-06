@@ -1,6 +1,7 @@
 import 'package:frontend/core/core.dart';
 import 'package:frontend/core/shared/domain/entities/records_entity.dart';
-import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/profuct_filter_entity/product_filter_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
 import 'package:frontend/features/catalog/domain/repositories/product_repository.dart';
 
 class ProductUseCases {
@@ -21,10 +22,12 @@ class ProductUseCases {
   Future<Either<Failure, RecordsEntity<ProductEntity>>> getPaginatedProducts({
     required int page,
     int limit = 10,
+    ProductFilterEntity? filter,
   }) async {
     return await _productRepository.getPaginatedProducts(
       page: page,
       limit: limit,
+      filter: filter,
     );
   }
 

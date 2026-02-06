@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:frontend/core/errors/failures.dart';
 import 'package:frontend/core/shared/domain/entities/records_entity.dart';
-import 'package:frontend/features/catalog/domain/entities/product_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/profuct_filter_entity/product_filter_entity.dart';
+import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
 
 abstract interface class ProductRepository {
   /// Obtiene los productos de forma paginada
@@ -14,6 +15,7 @@ abstract interface class ProductRepository {
   Future<Either<Failure, RecordsEntity<ProductEntity>>> getPaginatedProducts({
     required int page,
     required int limit,
+    ProductFilterEntity? filter,
   });
 
   /// Actualiza el precio de un producto específico

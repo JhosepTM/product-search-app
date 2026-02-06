@@ -2,12 +2,19 @@ import 'package:dartz/dartz.dart';
 import 'package:frontend/core/errors/failures.dart';
 import 'package:frontend/core/network/http_client.dart';
 import 'package:frontend/core/shared/data/models/records_model.dart';
+import 'package:frontend/features/catalog/data/models/product_filter_model.dart';
 import 'package:frontend/features/catalog/data/models/product_model.dart';
 
 abstract interface class ProductRemoteDataSource {
   Future<Either<Failure, RecordsModel<ProductModel>>> fetchPaginatedProducts({
     required int page,
     required int limit,
+    ProductFilterModel? filter,
+  });
+  
+  Future<Either<Failure, RecordsModel<ProductModel>>> patchProductPrice({
+    required int id,
+    required int price,
   });
 }
 
@@ -21,15 +28,19 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   Future<Either<Failure, RecordsModel<ProductModel>>> fetchPaginatedProducts({
     required int page,
     required int limit,
+    ProductFilterModel? filter,
   }) async {
     try {
+      final queryParameters = <String, dynamic>{
+        'Price': page,
+        'PageSize': limit,
+        ...?filter?.toQueryParameters(),
+      };
+
       final response = await _httpClient.requestHelper(
         endpoint: '/api/products',
         typeOfRequests: TypeRequests.get,
-        queryParameters: {
-          'page': page,
-          'pageSize': limit,
-        },
+        queryParameters: queryParameters,
       );
 
       final body = response.data as Map<String, dynamic>;
@@ -70,5 +81,11 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         ServerFailure(message: 'Failed to fetch products: $e'),
       );
     }
+  }
+  
+  @override
+  Future<Either<Failure, RecordsModel<ProductModel>>> patchProductPrice({required int id, required int price}) {
+    // TODO: implement patchProductPrice
+    throw UnimplementedError();
   }
 }
