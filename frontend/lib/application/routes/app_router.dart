@@ -1,11 +1,19 @@
 import 'package:frontend/features/catalog/presentation/catalog_page.dart';
 import 'package:frontend/features/home/presentation/home_page.dart';
 import 'package:frontend/features/settings/presentation/pages/settings_page.dart';
+import 'package:frontend/features/splash/presentation/splash_page.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/catalog',
+  initialLocation: '/',
   routes: [
+    GoRoute(
+      path: '/',
+      name: 'splash',
+      builder: (context, state) {
+        return const SplashPage();
+      },
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return HomePage(navigationShell: navigationShell);
@@ -34,10 +42,6 @@ final appRouter = GoRouter(
           ],
         ),
       ],
-    ),
-    GoRoute(
-      path: '/',
-      redirect: (_, _) => '/catalog',
     ),
   ],
 );
