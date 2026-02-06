@@ -30,7 +30,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
   ) async {
     // Si es la primera página, mostrar loading. Si es página siguiente, mantener loading discreto
     if (event.page == 1) {
-      emit(state.copyWith(status: ProductStatus.gettingProducts));
+      emit(state.copyWith(status: ProductStatus.GETTING_PRODUCTS));
     }
 
     final result = await _productUseCases.getPaginatedProducts(
@@ -42,7 +42,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     result.fold(
       (failure) => emit(
         state.copyWith(
-          status: ProductStatus.errorGettingProducts,
+          status: ProductStatus.ERROR_GETTING_PRODUCTS,
           failure: failure,
         ),
       ),
@@ -59,7 +59,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
 
         emit(
           state.copyWith(
-            status: ProductStatus.gotProducts,
+            status: ProductStatus.GOT_PRODUCTS,
             records: updatedRecords,
           ),
         );
@@ -71,7 +71,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     _UpdateProductPrice event,
     Emitter<ProductState> emit,
   ) async {
-    emit(state.copyWith(status: ProductStatus.updatingPrice));
+    emit(state.copyWith(status: ProductStatus.UPDATING_PRICE));
 
     final result = await _productUseCases.updateProductPrice(
       productId: event.productId,
@@ -82,7 +82,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     result.fold(
       (failure) => emit(
         state.copyWith(
-          status: ProductStatus.errorUpdatingPrice,
+          status: ProductStatus.ERROR_UPDATING_PRICE,
           failure: failure,
         ),
       ),
@@ -105,7 +105,7 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
 
         emit(
           state.copyWith(
-            status: ProductStatus.updatedPrice,
+            status: ProductStatus.UPDATED_PRICE,
             records: updatedRecords,
           ),
         );

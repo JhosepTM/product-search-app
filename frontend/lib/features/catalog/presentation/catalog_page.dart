@@ -10,6 +10,7 @@ import 'package:frontend/features/catalog/presentation/widgets/catalog_search_ba
 import 'package:frontend/features/catalog/presentation/widgets/product_card.dart';
 import 'package:frontend/features/catalog/presentation/sheets/product_filter_sheet.dart';
 import 'package:frontend/features/catalog/presentation/widgets/product_skeleton.dart';
+import 'package:frontend/shared/widgets/empty_search_state.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -53,7 +54,7 @@ class _CatalogPageState extends State<CatalogPage> {
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent - 500 &&
         state.records.pagination.hasNextPage &&
-        state.status == ProductStatus.gotProducts) {
+        state.status == ProductStatus.GOT_PRODUCTS) {
       final nextPage = state.records.pagination.page + 1;
       context.read<ProductBloc>().add(
         ProductEvent.fetchProducts(page: nextPage, limit: _pageSize),
@@ -132,20 +133,20 @@ class _CatalogPageState extends State<CatalogPage> {
       appBar: AppBar(title: const Text('Catálogo'), elevation: 0),
       body: BlocListener<ProductBloc, ProductState>(
         listener: (context, state) {
-          if (state.status == ProductStatus.updatedPrice) {
+          if (state.status == ProductStatus.UPDATED_PRICE) {
             ThToast.success(
               context: context,
               title: 'Éxito',
               description: 'Precio actualizado correctamente',
             );
-          } else if (state.status == ProductStatus.errorUpdatingPrice) {
+          } else if (state.status == ProductStatus.ERROR_UPDATING_PRICE) {
             ThToast.error(
               context: context,
               title: 'Error',
               description:
                   state.failure?.message ?? 'Error al actualizar el precio',
             );
-          } else if (state.status == ProductStatus.errorGettingProducts) {
+          } else if (state.status == ProductStatus.ERROR_GETTING_PRODUCTS) {
             ThToast.error(
               context: context,
               title: 'Error',
@@ -210,8 +211,8 @@ class _CatalogPageState extends State<CatalogPage> {
               child: BlocBuilder<ProductBloc, ProductState>(
                 builder: (context, state) {
                   // Estado inicial o cargando
-                  if (state.status == ProductStatus.gettingProducts ||
-                      state.status == ProductStatus.none) {
+                  if (state.status == ProductStatus.GETTING_PRODUCTS ||
+                      state.status == ProductStatus.NONE) {
                     return ListView.builder(
                       padding: const EdgeInsets.only(top: 8),
                       itemCount: 6,
@@ -220,7 +221,7 @@ class _CatalogPageState extends State<CatalogPage> {
                   }
 
                   // Error
-                  if (state.status == ProductStatus.errorGettingProducts) {
+                  if (state.status == ProductStatus.ERROR_GETTING_PRODUCTS) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -257,11 +258,14 @@ class _CatalogPageState extends State<CatalogPage> {
 
                   // Productos cargados
                   if (state.records.data.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No hay productos disponibles',
-                        style: theme.textTheme.titleLarge,
-                      ),
+                    return EmptySearchState(
+                      searchQuery: _searchController.text.isNotEmpty
+                          ? _searchController.text
+                          : null,
+                      title: 'No se encontraron productos',
+                      message: _activeFilter != null
+                          ? 'No hay productos que coincidan con los filtros aplicados.'
+                          : 'No hay productos disponibles.',
                     );
                   }
 

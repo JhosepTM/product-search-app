@@ -1,19 +1,19 @@
 part of 'product_bloc.dart';
 
 enum ProductStatus {
-  none,
-  gettingProducts,
-  gotProducts,
-  errorGettingProducts,
-  updatingPrice,
-  updatedPrice,
-  errorUpdatingPrice,
+  NONE,
+  GETTING_PRODUCTS,
+  GOT_PRODUCTS,
+  ERROR_GETTING_PRODUCTS,
+  UPDATING_PRICE,
+  UPDATED_PRICE,
+  ERROR_UPDATING_PRICE,
 }
 
 @freezed
 sealed class ProductState with _$ProductState {
   const factory ProductState({
-    @Default(ProductStatus.none) ProductStatus status,
+    @Default(ProductStatus.NONE) ProductStatus status,
     @JsonKey(fromJson: _recordsFromJson, toJson: _recordsToJson)
     @Default(
       RecordsEntity<ProductEntity>(

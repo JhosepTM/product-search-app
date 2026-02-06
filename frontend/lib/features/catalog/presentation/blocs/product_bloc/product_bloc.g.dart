@@ -10,7 +10,7 @@ _ProductState _$ProductStateFromJson(Map<String, dynamic> json) =>
     _ProductState(
       status:
           $enumDecodeNullable(_$ProductStatusEnumMap, json['status']) ??
-          ProductStatus.none,
+          ProductStatus.NONE,
       records: json['records'] == null
           ? const RecordsEntity<ProductEntity>(
               data: [],
@@ -26,11 +26,11 @@ Map<String, dynamic> _$ProductStateToJson(_ProductState instance) =>
     };
 
 const _$ProductStatusEnumMap = {
-  ProductStatus.none: 'none',
-  ProductStatus.gettingProducts: 'gettingProducts',
-  ProductStatus.gotProducts: 'gotProducts',
-  ProductStatus.errorGettingProducts: 'errorGettingProducts',
-  ProductStatus.updatingPrice: 'updatingPrice',
-  ProductStatus.updatedPrice: 'updatedPrice',
-  ProductStatus.errorUpdatingPrice: 'errorUpdatingPrice',
+  ProductStatus.NONE: 'NONE',
+  ProductStatus.GETTING_PRODUCTS: 'GETTING_PRODUCTS',
+  ProductStatus.GOT_PRODUCTS: 'GOT_PRODUCTS',
+  ProductStatus.ERROR_GETTING_PRODUCTS: 'ERROR_GETTING_PRODUCTS',
+  ProductStatus.UPDATING_PRICE: 'UPDATING_PRICE',
+  ProductStatus.UPDATED_PRICE: 'UPDATED_PRICE',
+  ProductStatus.ERROR_UPDATING_PRICE: 'ERROR_UPDATING_PRICE',
 };
