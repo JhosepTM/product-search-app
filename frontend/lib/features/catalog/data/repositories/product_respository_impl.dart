@@ -58,18 +58,12 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, bool>> updateProductPrice({
     required int productId,
     required double newPrice,
+    required String currency,
   }) async {
-    try {
-      // TODO: Implementar PATCH al backend para actualizar precio
-      // await _productRemoteDataSource.patchProductPrice(
-      //   productId: productId,
-      //   newPrice: newPrice,
-      // );
-      return const Right(true);
-    } catch (e) {
-      return Left(
-        ExampleFailure(message: 'Failed to update product price: \$e'),
-      );
-    }
+    return await productRemoteDataSource.patchProductPrice(
+      id: productId,
+      price: newPrice,
+      currency: currency,
+    );
   }
 }

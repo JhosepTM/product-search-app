@@ -7,7 +7,7 @@ import 'package:frontend/features/catalog/domain/entities/profuct_filter_entity/
 import 'package:frontend/features/catalog/presentation/blocs/product_bloc/product_bloc.dart';
 import 'package:frontend/features/catalog/presentation/widgets/catalog_search_bar.dart';
 import 'package:frontend/features/catalog/presentation/widgets/product_card.dart';
-import 'package:frontend/features/catalog/presentation/widgets/product_filter_sheet.dart';
+import 'package:frontend/features/catalog/presentation/sheets/product_filter_sheet.dart';
 import 'package:frontend/features/catalog/presentation/widgets/product_skeleton.dart';
 import 'package:go_router/go_router.dart';
 

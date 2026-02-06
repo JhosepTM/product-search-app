@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/catalog/domain/entities/product_entity/product_entity.dart';
-import 'package:frontend/features/catalog/presentation/widgets/edit_price_bottom_sheet.dart';
+import 'package:frontend/features/catalog/presentation/sheets/edit_price_bottom_sheet.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;

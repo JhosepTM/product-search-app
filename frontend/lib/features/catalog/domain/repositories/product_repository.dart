@@ -23,10 +23,12 @@ abstract interface class ProductRepository {
   /// Parámetros:
   /// - [productId]: ID del producto a actualizar
   /// - [newPrice]: Nuevo precio del producto
+  /// - [currency]: Moneda del producto
   ///
   /// Retorna true si la actualización fue exitosa
   Future<Either<Failure, bool>> updateProductPrice({
     required int productId,
     required double newPrice,
+    required String currency,
   });
 }

@@ -14,62 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProductEvent {
 
- int get page; int get limit;
-/// Create a copy of ProductEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ProductEventCopyWith<ProductEvent> get copyWith => _$ProductEventCopyWithImpl<ProductEvent>(this as ProductEvent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductEvent&&(identical(other.page, page) || other.page == page)&&(identical(other.limit, limit) || other.limit == limit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductEvent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,page,limit);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ProductEvent(page: $page, limit: $limit)';
+  return 'ProductEvent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ProductEventCopyWith<$Res>  {
-  factory $ProductEventCopyWith(ProductEvent value, $Res Function(ProductEvent) _then) = _$ProductEventCopyWithImpl;
-@useResult
-$Res call({
- int page, int limit
-});
-
-
-
-
-}
-/// @nodoc
-class _$ProductEventCopyWithImpl<$Res>
-    implements $ProductEventCopyWith<$Res> {
-  _$ProductEventCopyWithImpl(this._self, this._then);
-
-  final ProductEvent _self;
-  final $Res Function(ProductEvent) _then;
-
-/// Create a copy of ProductEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? page = null,Object? limit = null,}) {
-  return _then(_self.copyWith(
-page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
+class $ProductEventCopyWith<$Res>  {
+$ProductEventCopyWith(ProductEvent _, $Res Function(ProductEvent) __);
 }
 
 
@@ -87,11 +55,12 @@ extension ProductEventPatterns on ProductEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FetchProducts value)?  fetchProducts,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _FetchProducts value)?  fetchProducts,TResult Function( _UpdateProductPrice value)?  updateProductPrice,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _FetchProducts() when fetchProducts != null:
-return fetchProducts(_that);case _:
+return fetchProducts(_that);case _UpdateProductPrice() when updateProductPrice != null:
+return updateProductPrice(_that);case _:
   return orElse();
 
 }
@@ -109,11 +78,12 @@ return fetchProducts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FetchProducts value)  fetchProducts,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _FetchProducts value)  fetchProducts,required TResult Function( _UpdateProductPrice value)  updateProductPrice,}){
 final _that = this;
 switch (_that) {
 case _FetchProducts():
-return fetchProducts(_that);}
+return fetchProducts(_that);case _UpdateProductPrice():
+return updateProductPrice(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -127,11 +97,12 @@ return fetchProducts(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FetchProducts value)?  fetchProducts,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _FetchProducts value)?  fetchProducts,TResult? Function( _UpdateProductPrice value)?  updateProductPrice,}){
 final _that = this;
 switch (_that) {
 case _FetchProducts() when fetchProducts != null:
-return fetchProducts(_that);case _:
+return fetchProducts(_that);case _UpdateProductPrice() when updateProductPrice != null:
+return updateProductPrice(_that);case _:
   return null;
 
 }
@@ -148,10 +119,11 @@ return fetchProducts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int page,  int limit)?  fetchProducts,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int page,  int limit)?  fetchProducts,TResult Function( int productId,  double newPrice,  String currency)?  updateProductPrice,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FetchProducts() when fetchProducts != null:
-return fetchProducts(_that.page,_that.limit);case _:
+return fetchProducts(_that.page,_that.limit);case _UpdateProductPrice() when updateProductPrice != null:
+return updateProductPrice(_that.productId,_that.newPrice,_that.currency);case _:
   return orElse();
 
 }
@@ -169,10 +141,11 @@ return fetchProducts(_that.page,_that.limit);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int page,  int limit)  fetchProducts,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int page,  int limit)  fetchProducts,required TResult Function( int productId,  double newPrice,  String currency)  updateProductPrice,}) {final _that = this;
 switch (_that) {
 case _FetchProducts():
-return fetchProducts(_that.page,_that.limit);}
+return fetchProducts(_that.page,_that.limit);case _UpdateProductPrice():
+return updateProductPrice(_that.productId,_that.newPrice,_that.currency);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -186,10 +159,11 @@ return fetchProducts(_that.page,_that.limit);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int page,  int limit)?  fetchProducts,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int page,  int limit)?  fetchProducts,TResult? Function( int productId,  double newPrice,  String currency)?  updateProductPrice,}) {final _that = this;
 switch (_that) {
 case _FetchProducts() when fetchProducts != null:
-return fetchProducts(_that.page,_that.limit);case _:
+return fetchProducts(_that.page,_that.limit);case _UpdateProductPrice() when updateProductPrice != null:
+return updateProductPrice(_that.productId,_that.newPrice,_that.currency);case _:
   return null;
 
 }
@@ -204,12 +178,12 @@ class _FetchProducts implements ProductEvent {
   const _FetchProducts({this.page = 1, this.limit = 10});
   
 
-@override@JsonKey() final  int page;
-@override@JsonKey() final  int limit;
+@JsonKey() final  int page;
+@JsonKey() final  int limit;
 
 /// Create a copy of ProductEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$FetchProductsCopyWith<_FetchProducts> get copyWith => __$FetchProductsCopyWithImpl<_FetchProducts>(this, _$identity);
 
@@ -235,7 +209,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$FetchProductsCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
   factory _$FetchProductsCopyWith(_FetchProducts value, $Res Function(_FetchProducts) _then) = __$FetchProductsCopyWithImpl;
-@override @useResult
+@useResult
 $Res call({
  int page, int limit
 });
@@ -254,11 +228,81 @@ class __$FetchProductsCopyWithImpl<$Res>
 
 /// Create a copy of ProductEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? page = null,Object? limit = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? page = null,Object? limit = null,}) {
   return _then(_FetchProducts(
 page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
 as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _UpdateProductPrice implements ProductEvent {
+  const _UpdateProductPrice({required this.productId, required this.newPrice, required this.currency});
+  
+
+ final  int productId;
+ final  double newPrice;
+ final  String currency;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateProductPriceCopyWith<_UpdateProductPrice> get copyWith => __$UpdateProductPriceCopyWithImpl<_UpdateProductPrice>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateProductPrice&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.newPrice, newPrice) || other.newPrice == newPrice)&&(identical(other.currency, currency) || other.currency == currency));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,productId,newPrice,currency);
+
+@override
+String toString() {
+  return 'ProductEvent.updateProductPrice(productId: $productId, newPrice: $newPrice, currency: $currency)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdateProductPriceCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
+  factory _$UpdateProductPriceCopyWith(_UpdateProductPrice value, $Res Function(_UpdateProductPrice) _then) = __$UpdateProductPriceCopyWithImpl;
+@useResult
+$Res call({
+ int productId, double newPrice, String currency
+});
+
+
+
+
+}
+/// @nodoc
+class __$UpdateProductPriceCopyWithImpl<$Res>
+    implements _$UpdateProductPriceCopyWith<$Res> {
+  __$UpdateProductPriceCopyWithImpl(this._self, this._then);
+
+  final _UpdateProductPrice _self;
+  final $Res Function(_UpdateProductPrice) _then;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? productId = null,Object? newPrice = null,Object? currency = null,}) {
+  return _then(_UpdateProductPrice(
+productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as int,newPrice: null == newPrice ? _self.newPrice : newPrice // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

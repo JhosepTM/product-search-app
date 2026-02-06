@@ -6,4 +6,10 @@ sealed class ProductEvent with _$ProductEvent {
     @Default(1) int page,
     @Default(10) int limit,
   }) = _FetchProducts;
+
+  const factory ProductEvent.updateProductPrice({
+    required int productId,
+    required double newPrice,
+    required String currency,
+  }) = _UpdateProductPrice;
 }

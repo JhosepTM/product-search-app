@@ -11,10 +11,11 @@ abstract interface class ProductRemoteDataSource {
     required int limit,
     ProductFilterModel? filter,
   });
-  
-  Future<Either<Failure, RecordsModel<ProductModel>>> patchProductPrice({
+
+  Future<Either<Failure, bool>> patchProductPrice({
     required int id,
-    required int price,
+    required double price,
+    required String currency,
   });
 }
 
@@ -22,7 +23,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   final HttpClientHelper _httpClient;
 
   ProductRemoteDataSourceImpl({required HttpClientHelper httpClient})
-      : _httpClient = httpClient;
+    : _httpClient = httpClient;
 
   @override
   Future<Either<Failure, RecordsModel<ProductModel>>> fetchPaginatedProducts({
@@ -72,20 +73,38 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         hasPreviousPage: currentPage > 1,
       );
 
-      return Right(RecordsModel<ProductModel>(
-        data: products,
-        pagination: pagination,
-      ));
-    } catch (e) {
-      return Left(
-        ServerFailure(message: 'Failed to fetch products: $e'),
+      return Right(
+        RecordsModel<ProductModel>(data: products, pagination: pagination),
       );
+    } catch (e) {
+      return Left(ServerFailure(message: 'Failed to fetch products: $e'));
     }
   }
-  
+
   @override
-  Future<Either<Failure, RecordsModel<ProductModel>>> patchProductPrice({required int id, required int price}) {
-    // TODO: implement patchProductPrice
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> patchProductPrice({
+    required int id,
+    required double price,
+    required String currency,
+  }) async {
+    try {
+      final response = await _httpClient.requestHelper(
+        endpoint: '/api/Products/$id/price',
+        typeOfRequests: TypeRequests.patch,
+        data: {'price': price, 'currency': currency},
+      );
+
+      final body = response.data as Map<String, dynamic>;
+
+      if (body['success'] != true) {
+        return const Left(
+          ServerFailure(message: 'Error al actualizar el precio del producto.'),
+        );
+      }
+
+      return const Right(true);
+    } catch (e) {
+      return Left(ServerFailure(message: 'Failed to update product price: $e'));
+    }
   }
 }

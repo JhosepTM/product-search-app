@@ -36,6 +36,7 @@ class ProductUseCases {
   /// Parámetros:
   /// - [productId]: ID del producto a actualizar
   /// - [newPrice]: Nuevo precio del producto
+  /// - [currency]: Moneda del producto
   ///
   /// Retorna un [Future] con [Either]:
   /// - [Right]: true si la actualización fue exitosa
@@ -43,6 +44,7 @@ class ProductUseCases {
   Future<Either<Failure, bool>> updateProductPrice({
     required int productId,
     required double newPrice,
+    required String currency,
   }) async {
     if (newPrice < 0) {
       return Left(
@@ -53,6 +55,7 @@ class ProductUseCases {
     return await _productRepository.updateProductPrice(
       productId: productId,
       newPrice: newPrice,
+      currency: currency,
     );
   }
 }

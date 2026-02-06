@@ -11,9 +11,10 @@ part 'product_state.dart';
 
 class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
   ProductBloc({required ProductUseCases productUseCases})
-      : _productUseCases = productUseCases,
-        super(const ProductState()) {
+    : _productUseCases = productUseCases,
+      super(const ProductState()) {
     on<_FetchProducts>(_onFetchProducts);
+    on<_UpdateProductPrice>(_onUpdateProductPrice);
   }
 
   final ProductUseCases _productUseCases;
@@ -39,12 +40,8 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
     );
 
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: ProductStatus.failure,
-          failure: failure,
-        ),
-      ),
+      (failure) =>
+          emit(state.copyWith(status: ProductStatus.failure, failure: failure)),
       (newRecords) {
         // Si es la primera página, reemplazar. Si no, concatenar
         final updatedProducts = event.page == 1
@@ -54,6 +51,46 @@ class ProductBloc extends HydratedBloc<ProductEvent, ProductState> {
         final updatedRecords = RecordsEntity<ProductEntity>(
           data: updatedProducts,
           pagination: newRecords.pagination,
+        );
+
+        emit(
+          state.copyWith(
+            status: ProductStatus.success,
+            records: updatedRecords,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _onUpdateProductPrice(
+    _UpdateProductPrice event,
+    Emitter<ProductState> emit,
+  ) async {
+    final result = await _productUseCases.updateProductPrice(
+      productId: event.productId,
+      newPrice: event.newPrice,
+      currency: event.currency,
+    );
+
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(status: ProductStatus.failure, failure: failure)),
+      (_) {
+        // Actualizar el producto en la lista local
+        final updatedProducts = state.records.data.map((product) {
+          if (product.id == event.productId) {
+            return product.copyWith(
+              price: event.newPrice,
+              currency: event.currency,
+            );
+          }
+          return product;
+        }).toList();
+
+        final updatedRecords = RecordsEntity<ProductEntity>(
+          data: updatedProducts,
+          pagination: state.records.pagination,
         );
 
         emit(
