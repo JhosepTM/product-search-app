@@ -6,8 +6,12 @@ class CatalogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Catalog Page'),
+      appBar: AppBar(
+        title: const Text('Catálogo'),
+        elevation: 0,
+      ),
+      body: const Center(
+        child: Text('Catálogo de Productos'),
       ),
     );
   }
