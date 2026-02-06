@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
-  final Widget child;
+class HomePage extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
   const HomePage({
     super.key,
-    required this.child,
+    required this.navigationShell,
   });
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  // Actualiza el índice seleccionado según la ruta actua
   void _onNavItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        context.go('/catalog');
-        break;
-      case 1:
-        context.go('/settings');
-        break;
-    }
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.child,
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -47,7 +31,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Configuración',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: navigationShell.currentIndex,
         onTap: _onNavItemTapped,
       ),
     );
