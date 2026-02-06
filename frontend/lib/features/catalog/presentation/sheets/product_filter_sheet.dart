@@ -329,50 +329,6 @@ class _ProductFilterSheetState extends State<ProductFilterSheet> {
 
                 const SizedBox(height: 24),
 
-                // Solo con stock
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Solo con stock',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              color: theme.colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Mostrar solo productos disponibles',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    FormBuilderField<bool>(
-                      name: 'inStock',
-                      builder: (field) {
-                        return Switch(
-                          value: field.value ?? false,
-                          onChanged: field.didChange,
-                          activeColor: theme.colorScheme.surface,
-                          activeTrackColor: theme.colorScheme.primary,
-                          inactiveThumbColor: theme.colorScheme.surface,
-                          inactiveTrackColor: theme.dividerColor,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 24),
-
                 // MONEDA
                 const FilterSectionTitle(title: 'MONEDA'),
                 const SizedBox(height: 12),

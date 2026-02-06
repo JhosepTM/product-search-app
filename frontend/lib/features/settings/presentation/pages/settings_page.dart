@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/core/utils/talker_util.dart';
 import 'package:frontend/features/settings/presentation/blocs/bloc/settings_bloc.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -73,6 +76,22 @@ class SettingsPage extends StatelessWidget {
                 // TODO: Mostrar política de privacidad
               },
             ),
+            // Solo mostrar en modo debug
+            if (kDebugMode) ...[
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.bug_report),
+                title: const Text('Ver Logs'),
+                subtitle: const Text('Historial de eventos y errores'),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TalkerScreen(talker: talker),
+                    ),
+                  );
+                },
+              ),
+            ],
           ],
         ),
       ),

@@ -185,6 +185,13 @@ class _CatalogPageState extends State<CatalogPage> {
                           _applyStockFilter(category);
                         },
                         selectedColor: theme.colorScheme.primary,
+                        backgroundColor: theme.colorScheme.surface,
+                        side: BorderSide(
+                          color: isSelected
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.outline,
+                        ),
+                        showCheckmark: isSelected,
                         labelStyle: TextStyle(
                           color: isSelected
                               ? theme.colorScheme.onPrimary
